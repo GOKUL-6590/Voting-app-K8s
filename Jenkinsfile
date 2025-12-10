@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_REGISTRY = 'denish952'
+        DOCKER_REGISTRY = 'gokulmp7'
         BUILD_TAG = "${BUILD_NUMBER}"
         DEV_NAMESPACE = 'voting-app-dev'
         PROD_NAMESPACE = 'voting-app'
@@ -21,21 +21,21 @@ pipeline {
         stage('Build Vote Image') {
             steps {
                 echo 'Building Vote Service'
-                sh 'docker build -t ${DOCKER_REGISTRY}/voting-app-vote:${BUILD_TAG} -t ${DOCKER_REGISTRY}/voting-app-vote:latest -f vote/Dockerfile vote/'
+                sh 'docker build -t ${DOCKER_REGISTRY}/vote-app:${BUILD_TAG} -t ${DOCKER_REGISTRY}/vote-app:latest -f vote/Dockerfile vote/'
             }
         }
         
         stage('Build Worker Image') {
             steps {
                 echo 'Building Worker Service'
-                sh 'docker build -t ${DOCKER_REGISTRY}/voting-app-worker:${BUILD_TAG} -t ${DOCKER_REGISTRY}/voting-app-worker:latest -f worker/Dockerfile worker/'
+                sh 'docker build -t ${DOCKER_REGISTRY}/worker-app:${BUILD_TAG} -t ${DOCKER_REGISTRY}/worker-app:latest -f worker/Dockerfile worker/'
             }
         }
         
         stage('Build Result Image') {
             steps {
                 echo 'Building Result Service'
-                sh 'docker build -t ${DOCKER_REGISTRY}/voting-app-result:${BUILD_TAG} -t ${DOCKER_REGISTRY}/voting-app-result:latest -f result/Dockerfile result/'
+                sh 'docker build -t ${DOCKER_REGISTRY}/result-app:${BUILD_TAG} -t ${DOCKER_REGISTRY}/result-app:latest -f result/Dockerfile result/'
             }
         }
         
@@ -45,12 +45,12 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh '''
                         echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                        docker push ${DOCKER_REGISTRY}/voting-app-vote:${BUILD_TAG}
-                        docker push ${DOCKER_REGISTRY}/voting-app-vote:latest
-                        docker push ${DOCKER_REGISTRY}/voting-app-worker:${BUILD_TAG}
-                        docker push ${DOCKER_REGISTRY}/voting-app-worker:latest
-                        docker push ${DOCKER_REGISTRY}/voting-app-result:${BUILD_TAG}
-                        docker push ${DOCKER_REGISTRY}/voting-app-result:latest
+                        docker push ${DOCKER_REGISTRY}/vote-app:${BUILD_TAG}
+                        docker push ${DOCKER_REGISTRY}/vote-app:latest
+                        docker push ${DOCKER_REGISTRY}/worker-app:${BUILD_TAG}
+                        docker push ${DOCKER_REGISTRY}/worker-app:latest
+                        docker push ${DOCKER_REGISTRY}/result-app:${BUILD_TAG}
+                        docker push ${DOCKER_REGISTRY}/result-app:latest
                         docker logout
                     '''
                 }
@@ -61,9 +61,9 @@ pipeline {
             steps {
                 echo 'Updating K8s manifests'
                 sh '''
-                    sed -i "s|denish952/voting-app-vote:.*|denish952/voting-app-vote:${BUILD_TAG}|g" k8s-yaml/vote-deployment.yaml
-                    sed -i "s|denish952/voting-app-worker:.*|denish952/voting-app-worker:${BUILD_TAG}|g" k8s-yaml/worker-deployment.yaml
-                    sed -i "s|denish952/voting-app-result:.*|denish952/voting-app-result:${BUILD_TAG}|g" k8s-yaml/result-deployment.yaml
+                    sed -i "s|gokulmp7/vote-app:.*|gokulmp7/vote-app:${BUILD_TAG}|g" k8s-yaml/vote-deployment.yaml
+                    sed -i "s|gokulmp7/worker-app:.*|gokulmp7/worker-app:${BUILD_TAG}|g" k8s-yaml/worker-deployment.yaml
+                    sed -i "s|gokulmp7/result-app:.*|gokulmp7/result-app:${BUILD_TAG}|g" k8s-yaml/result-deployment.yaml
                 '''
             }
         }
