@@ -54,6 +54,6 @@ Vote Frontend → Redis Queue → Worker → PostgreSQL → Result Dashboard
 - `docker-compose.yml` - Local development setup
 - `Jenkinsfile` - CI/CD pipeline
 
-## Author
+## Author...
 
 Gokul M P - gokulmp504@gmail.com
