@@ -56,4 +56,4 @@ Vote Frontend → Redis Queue → Worker → PostgreSQL → Result Dashboard
 
 ## Author
 
-Denish M - denishk950@gmail.com
+Gokul M P - gokulmp504@gmail.com
