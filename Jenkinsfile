@@ -6,7 +6,7 @@ pipeline {
         BUILD_TAG = "${BUILD_NUMBER}"
         DEV_NAMESPACE = 'voting-app-dev'
         PROD_NAMESPACE = 'voting-app'
-        KUBECONFIG = '/var/jenkins_home/.kube/config'
+        KUBECONFIG = '/var/lib/jenkins/.kube/config'  
     }
     
     stages {
