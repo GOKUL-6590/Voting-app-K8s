@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: result
-        image: denish952/voting-app-result:v1
+        image: gokulmp7/result-app:v1
         ports:
         - containerPort: 80
         envFrom:
