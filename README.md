@@ -15,7 +15,7 @@ docker-compose down
 ### Build Docker Images
 ```bash
 docker build -t gokulmp7/vote-app:v1 -f vote/Dockerfile vote/
-  docker build -t gokulmp7/worker-app:v1 -f worker/Dockerfile worker/
+docker build -t gokulmp7/worker-app:v1 -f worker/Dockerfile worker/
 docker build -t gokulmp7/result-app:v1 -f result/Dockerfile result/
 
 docker push gokulmp7/vote-app:v1
